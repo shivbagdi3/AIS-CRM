@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="zxx">
+
+<head>
+  <meta charset="utf-8">
+  <title >AIS</title>
+  {% load static %}
+
+  <!-- mobile responsive meta -->
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+  <!-- ** Plugins Needed for the Project ** -->
+  <!-- Bootstrap -->
+  <link rel="stylesheet" href="{% static 'plugins/bootstrap/bootstrap.min.css' %}">
+  <!-- themefy-icon -->
+  <link rel="stylesheet" href="{% static 'plugins/themify-icons/themify-icons.css' %}">
+  <!-- slick slider -->
+  <link rel="stylesheet" href="{% static 'plugins/slick/slick.css' %}">
+  <!-- venobox popup -->
+  <link rel="stylesheet" href="{% static 'plugins/Venobox/venobox.css' %}">
+  <!-- aos -->
+  <link rel="stylesheet" href="{% static 'plugins/aos/aos.css' %}">
+
+  <!-- Main Stylesheet -->
+  <link href="{% static 'css/style.css' %}" rel="stylesheet">
+  
+  <!--Favicon-->
+  <link rel="shortcut icon" href="{% static 'images/favicon.ico' %}" type="image/x-icon">
+  <link rel="icon" href="{% static 'images/favicon.ico' %}" type="image/x-icon">
+
+</head>
+
+<body>
+  
+
+<!-- navigation -->
+<section class="fixed-top navigation">
+  <div class="container">
+    <nav class="navbar navbar-expand-lg py-0 navbar-light">
+      <a class="navbar-brand font1" href="{% url 'index' %}"><img src="{% static 'images/logo.png.png' %}" width="80px" height="40px" alt="logo"><span style="font-family: Caveat;font-size:larger;">   Accurate IT  Solutions</span></a>
+      <button class="navbar-toggler border-0" type="button" data-toggle="collapse" data-target="#navbar" aria-controls="navbar"
+        aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <!-- navbar -->
+      <div class="collapse navbar-collapse text-center" id="navbar">
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'index' %}">Home</a>
+          </li>
+         
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'about' %}">About</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'service' %}">Services</a>
+          </li>
+          
+          
+          <li class="nav-item">
+            <a class="nav-link page-scroll" href="{% url 'index' %}#pricing">Pricing</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'contact' %}">Contact</a>
+          </li>
+        </ul>
+        
+      </div>
+    </nav>
+  </div>
+</section>
+<!-- /navigation -->
+
+<!-- about us -->
+<section class="section-lg about pb-0">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-12">
+        <h2 class="section-title">About us</h2>
+      </div>
+      <div class="col-lg-12 mb-100">
+        <p>"Pioneering Web Solutions for a Digital Tomorrow"
+          Welcome to Accurate IT Solutions, where innovation meets dedication in the realm of web design and development. Founded by a group of passionate visionaries, 
+          we are a dynamic startup with a clear mission to craft exceptional websites that empower businesses and individuals to thrive in the digital landscape.</p>
+        <p>We're dedicated to provide you with top-notch services and support during our designated office hours.We provide "High-Quality Software Development at Budget-Friendly Prices"</p>
+      </div>
+      <div class="col-lg-12">
+        <!-- about video -->
+        
+  <!-- background shapes -->
+  <img src="{% static 'images/background-shape/green-dot.png' %}" alt="background-shape" class="about-bg-1 up-down-animation">
+  <img src="{% static 'images/background-shape/blue-dot.png' %}" alt="background-shape" class="about-bg-2 left-right-animation">
+  <img src="{% static 'images/background-shape/green-half-cycle.png' %}" alt="background-shape" class="about-bg-3 up-down-animation">
+  <img src="{% static 'images/background-shape/seo-ball-1.png' %}" alt="background-shape" class="about-bg-4 left-right-animation">
+  <img src="{% static 'images/background-shape/team-bg-triangle.png' %}" alt="background-shape" class="about-bg-5 up-down-animation">
+  <img src="{% static 'images/background-shape/service-half-cycle.png' %}" alt="background-shape" class="about-bg-6 left-right-animation">
+</section>
+<!-- /about us -->
+
+<!-- product
+
+<section class="section product" style="background-image: url(images/backgrounds/about-bg.png);">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-lg-12 text-center">
+        <h2 class="section-title">Our Product</h2>
+        <p class="mb-100">Far far away, behind the word mountains, far from the <br> countries Vokalia and Consonantia.</p>
+      </div>
+      <div class="col-md-4 col-sm-6 mb-50">
+        <a href="#"><img src="images/product/product-1.jpg" alt="product-img" class="rounded w-100 img-fluid"></a>
+      </div>
+      <div class="col-md-4 col-sm-6 mb-50">
+        <a href="#"><img src="images/product/product-2.jpg" alt="product-img" class="rounded w-100 img-fluid"></a>
+      </div>
+      <div class="col-md-4 col-sm-6 mb-50">
+        <a href="#"><img src="images/product/product-3.jpg" alt="product-img" class="rounded w-100 img-fluid"></a>
+      </div>
+      <div class="col-12 text-center">
+        <a href="#" class="btn btn-primary">Explore More Product</a>
+      </div>
+    </div>
+  </div> -->
+
+  <!-- our vision -->
+<section class="section">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-6">
+        <h2 class="section-title">Our Vision</h2>
+        <p>"Empowering Dreams is Our Vision in Crafting and Delivering Websites.
+          At Accurate IT Solutions, our vision goes beyond just creating and delivering websites. We are dedicated to empowering dreams, fostering innovation, 
+          and facilitating success through the digital medium. Our purpose is deeply rooted in transforming your ideas into impactful online realities.
+          Together, we can turn your dreams into digital realities, create websites that inspire and empower you to reach new heights of success in the digital age."</p>
+      </div>
+      <div class="col-md-6">
+        <img src="{% static 'images/about/vision.png' %}" alt="vision" class="img-fluid w-100">
+      </div>
+    </div>
+  </div>
+</section>
+<!-- /our vision -->
+
+<!-- clients
+<section class="section">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-12 text-center">
+        <h2 class="section-title">Our Clients</h2>
+        <ul class="list-inline text-center">
+          <li class="list-inline-item mx-5 mb-5"><a href="#"><img src="images/company logo.png.jpeg" alt="clients-logo" class="img-fluid" width="60%" height="60"></a></li>
+          <li class="list-inline-item mx-5 mb-5"><a href="#"><img src="images/company logo.png1.png" alt="clients-logo" class="img-fluid"  width="60%" height="60"></a></li>
+          <li class="list-inline-item mx-5 mb-5"><a href="#"><img src="images/company_logo.png2-removebg-preview.png" alt="clients-logo" class="img-fluid" width="60%" height="60"></a></li>
+          
+        </ul>
+      </div>
+    </div>
+  </div>
+</section> -->
+<!-- /clients -->
+</section>
+<!-- /product -->
+
+
+
+<!-- footer -->
+<footer class="footer-section footer" style="background-image: url('{% static "images/backgrounds/footer-bg.png" %}');">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-4 text-center text-lg-left mb-4 mb-lg-0">
+     
+      <!-- footer social icon -->
+      <nav class="col-12">
+        <ul class="list-inline text-lg-right text-center social-icon">
+          <li class="list-inline-item">
+            <a class="facebook" href="https://www.facebook.com/people/Accurate-It-Solutions/61551415614695/"><i class="ti-facebook"></i></a>
+          </li>
+          <li class="list-inline-item">
+            <a class="twitter" href="https://twitter.com/AccurateIT87841"><i class="ti-twitter-alt"></i></a>
+          </li>
+          <li class="list-inline-item">
+            <a class="linkedin" href="https://www.linkedin.com/in/accurate-it-solutions-b277a4291"><i class="ti-linkedin"></i></a>
+          </li>
+          <li class="list-inline-item">
+            <a class="black" href="https://www.instagram.com/accurateitsolutionss/"><i class="ti-instagram"></i></a>
+          </li>
+        </ul>
+      </nav>
+    </div>
+  </div>
+  
+  <div class="credit">created by <span>ACCURATE-IT-SOLUTIONS </span>all rights reserved.</div>
+  
+</footer>
+<!-- /footer -->
+
+<!-- jQuery -->
+<script src="{% static 'plugins/jQuery/jquery.min.js' %}"></script>
+<!-- Bootstrap JS -->
+<script src="{% static 'plugins/bootstrap/bootstrap.min.js' %}"></script>
+<!-- slick slider -->
+<script src="{% static 'plugins/slick/slick.min.js' %}"></script>
+<!-- venobox -->
+<script src="{% static 'plugins/Venobox/venobox.min.js' %}"></script>
+<!-- aos -->
+<script src="{% static 'plugins/aos/aos.js' %}"></script>
+<!-- Main Script -->
+<script src="{% static 'js/script.js' %}"></script>
+
+</body>
+</html>
