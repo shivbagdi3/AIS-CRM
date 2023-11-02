@@ -41,6 +41,9 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'Home',
     'crm_home',
+    'client',
+    'inventory',
+    'complains',
     
 ]
 
