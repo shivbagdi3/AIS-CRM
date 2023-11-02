@@ -23,5 +23,5 @@ urlpatterns = [
     path("", include('crm_home.urls')),
     path("", include('client.urls')),
     path("", include('inventory.urls')),
-    path("", include('complains.urls'))
+    path("", include('complains.urls')),
 ]
