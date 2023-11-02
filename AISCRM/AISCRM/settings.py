@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'client',
     'inventory',
     'complains',
+    'account',
     
 ]
 
