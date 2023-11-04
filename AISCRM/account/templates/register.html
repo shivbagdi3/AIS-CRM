@@ -1,0 +1,106 @@
+{% extends 'base2.html' %}
+
+{% block title %} 
+AIS | SingUp
+{% endblock %}
+
+{% block content %}
+<section>
+<div class="container mt-5">
+  <form class="col-8 mx-auto card p-3 shadow-lg" method="post" action="{% url 'register' %}" id="myForm">
+    {% csrf_token %}
+
+    {% if msg is not None %}
+    <div id="danger-alert" class="alert alert-danger alert-dismissible fade show" role="alert">
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Danger:">
+        <use xlink:href="#exclamation-triangle-fill" />
+      </svg>
+      <div>
+        {{ msg }}
+      </div>
+    </div>
+    {% endif %}
+
+    <h2 class="text-primary fw-bold ms-2"> SingUp</h2>
+
+    <br>
+    <div class="row">
+      <div class="col-md-6 mb-4">
+
+        <div class="form-outline">
+          <input type="text" id="firstName" name="first_name" class="form-control form-control-lg" />
+          <label class="form-label" for="firstName">First Name</label>
+        </div>
+
+      </div>
+      <div class="col-md-6 mb-4">
+
+        <div class="form-outline">
+          <input type="text" id="lastName" name="last_name" class="form-control form-control-lg" />
+          <label class="form-label" for="lastName">Last Name</label>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-6 mb-4 pb-2">
+
+        <div class="form-outline">
+          <input type="email" id="emailAddress" name="email" class="form-control form-control-lg" />
+          <label class="form-label" for="emailAddress">Email</label>
+        </div>
+
+      </div>
+      <div class="col-md-6 mb-4 pb-2">
+
+        <div class="form-outline">
+          <input type="tel" id="phoneNumber" name="phone_num" class="form-control form-control-lg" />
+          <label class="form-label" for="phoneNumber">Phone Number</label>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-6 mb-4 d-flex align-items-center">
+
+        <div class="form-outline datepicker w-100">
+          <input type="password" name="password1" class="form-control form-control-lg" id="birthdayDate" />
+          <label for="birthdayDate" class="form-label">Password</label>
+        </div>
+
+      </div>
+      <div class="col-md-6 mb-4">
+        <div class="form-outline datepicker w-100">
+          <input type="password" name="password2" class="form-control form-control-lg" id="birthdayDate" />
+          <label for="birthdayDate" class="form-label">Confirm Password</label>
+        </div>
+
+      </div>
+    </div>
+
+    <p class="ms-2">Already Have Account ? <a href="{% url 'crm-index' %}">Login</a></p>
+    <ul class="nav nav-pills mb-3 justify-content-center" id="pills-tab2" role="tablist">
+      <li class="nav-item" role="presentation">
+        <button class="btn btn-primary" type="submit" id="pills-home-tab2" data-mdb-toggle="pill"
+          data-mdb-target="#pills-home2" type="button" role="tab" aria-controls="pills-home" aria-selected="true"><i class="fa-solid fa-user-plus me-2"></i>
+          SingUp
+        </button>
+      </li>
+    </ul><!--
+    <div class="mt-1 pt-2">
+      <input class="btn btn-primary btn-lg" type="submit" value="SingUp" />
+    </div>-->
+
+  </form>
+</div>
+
+<script document.getElementById("myForm").reset();></script>
+
+</section>
+
+
+
+{% endblock %}

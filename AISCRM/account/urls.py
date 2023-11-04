@@ -1,8 +1,10 @@
 from django.urls import path, include
-from .views import add_user
+from account.views import register_user, verify_email, request_verification_code, user_login
 
 
 urlpatterns = [
-    path('add_user/', add_user, name='add_user')
-
+    path('login/', user_login, name='login'),
+    path('register/', register_user, name='register'),
+    path('verify/', verify_email, name='verify_email'),
+    path('request_verification_code/', request_verification_code, name='resend_code')
 ]

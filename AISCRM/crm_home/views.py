@@ -3,17 +3,10 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 
 def crm_index(request):
-    if request.method == 'POST':
-        username = request.POST['username']
-        password = request.POST['password']
-        user = authenticate(request, username = username, password = password)
-        if user is not None:
-            login(request, user)
-            messages.success(request, "You are logged in... Have a good day")
-            return redirect('crm-index')
-        else:
-            messages.success(request, "Login failed. Please retry again..")
-    return render(request, 'crm.html')
+    if request.user.is_authenticated:
+        return render(request, 'crm.html')
+    else:
+        return redirect('login')
 
 def user_logout(request):
     logout(request)

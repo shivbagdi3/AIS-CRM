@@ -1,0 +1,49 @@
+{% extends 'base2.html' %}
+{% block content %}
+
+<div class="container mt-5 align-items-center">
+    <form class="col-5 mx-auto card p-3 shadow-lg form-content" method="post" action="{% url 'login' %}">
+        {% csrf_token %}
+
+        <div>
+            {%if messages %}
+            {% for message in messages %}
+            <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                <strong>{{ message }}</strong>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+
+            {% endfor %}
+            {% endif %}
+        </div>
+
+        <h2><span class="text-primary">Login </span></h2>
+        <br>
+
+
+        <div class="row">
+            <div class="col-md-12 mb-4 pb-2">
+
+                <div class="form-outline">
+                    <input type="text" id="emailAddress" name="username" class="form-control form-control-lg" />
+                    <label class="form-label" for="form2Example1">Username</label>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12 mb-4 pb-2">
+
+                <div class="form-outline">
+                    <input type="password" id="form2Example1" name="password" class="form-control form-control-lg" />
+                    <label class="form-label" for="form1Example1">Password</label>
+                </div>
+            </div>
+        </div>
+        <button type="submit" class="btn btn-primary">Login</button>
+        <br>
+        <p>Don't Have A Account ? <a class="text-primary" href="{% url 'register' %}"> Register Now</a></p>
+    </form>
+</div>
+
+{% endblock %}

@@ -1,0 +1,146 @@
+{% extends 'base2.html' %}
+{% block title %}
+verifications
+{% endblock %}
+{% block content %}
+{% load static %}
+
+<br>
+<br>
+<div class="row justify-content-center">
+  <div class="col-sm-6">
+    <div class="card">
+      <div class="card-body">
+        {% if msg is not None %}
+        <div id="danger-alert" class="alert alert-danger alert-dismissible fade show" role="alert">
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+          <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Danger:">
+            <use xlink:href="#exclamation-triangle-fill" />
+          </svg>
+          <div>
+            {{ msg }}
+          </div>
+        </div>
+        {% endif %}
+        <h4 class="text-primary fs-2 fw-bold">Let's Verify</h4>
+        <p class="text-lg text-grey fs-5 mb-5">A verification code has sent to your email</p>
+        <form method="post" action="{% url 'verify_email' %}">
+          {% csrf_token %}
+          <div class="row">
+            <div class="col-sm">
+              <div class="form-outline">
+                <input type="text" id="code" name="verification_code" class="form-control form-control-lg" />
+                <label class="form-label" for="code">Enter code</label>
+              </div>
+            </div>
+          </div>
+          <br>
+          <ul class="nav nav-pills mb-3 justify-content-center" id="pills-tab2" role="tablist">
+            <li class="nav-item" role="presentation">
+              <button class="btn btn-primary" type="submit" id="pills-home-tab2" data-mdb-toggle="pill"
+                data-mdb-target="#pills-home2" type="button" role="tab" aria-controls="pills-home"
+                aria-selected="true"><i class="fa-solid fa-user-check me-2"></i>
+                Verify
+              </button>
+            </li>
+
+            <li class="nav-item ms-2 role=" presentation">
+              <button class="btn btn-primary" type="submit" id="pills-home-tab2 request-verification-link"
+                data-mdb-toggle="pill" data-mdb-target="#pills-home2" type="button" role="tab"
+                aria-controls="pills-home" aria-selected="true"><i
+                  class="fa-solid fa-arrow-rotate-right me-2"></i>Resend Code
+              </button>
+            </li>
+          </ul>
+        </form>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+
+<!-- resend_verification.html -->
+
+<!-- verify_email.html -->
+
+<!-- Include jQuery library for simplicity in this example -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+  $(document).ready(function () {
+    // Attach a click event handler to the "Request New Verification Code" link
+    $("#request-verification-link").on("click", function (event) {
+      event.preventDefault();
+
+      // Send a POST request to the 'request_verification_code' view using AJAX
+      $.ajax({
+        type: "POST",
+        url: "{% url 'resend_code' %}",
+        data: {},
+        beforeSend: function (xhr) {
+          xhr.setRequestHeader("X-CSRFToken", "{{ csrf_token }}");
+        },
+        success: function (response) {
+          // Handle the success response here (if needed)
+          alert("Verification code has been sent to your email.");
+          startCountdown();
+        },
+        error: function (xhr, textStatus, errorThrown) {
+          // Handle any errors here (if needed)
+          alert("Failed to request verification code: " + errorThrown);
+        }
+      });
+    });
+
+    // Countdown for the resend button
+    const resendButton = document.getElementById('resendButton');
+    let countdownSeconds = 30; // Change this to the desired countdown time in seconds
+
+    function startCountdown() {
+      resendButton.disabled = true;
+      resendButton.innerText = `${countdownSeconds} seconds`;
+
+      let timer = setInterval(function () {
+        countdownSeconds--;
+        if (countdownSeconds >= 0) {
+          resendButton.innerText = `${countdownSeconds} seconds`;
+        } else {
+          clearInterval(timer);
+          resendButton.disabled = false;
+          resendButton.innerText = 'Resend Verification Code';
+        }
+      }, 1000);
+    }
+
+    // Resend verification code when the resend button is clicked
+    resendButton.onclick = function (event) {
+      event.preventDefault();
+      // Start the countdown when the button is clicked
+      startCountdown();
+
+      // Send a POST request to the 'resend_code' view using AJAX
+      $.ajax({
+        type: "POST",
+        url: "{% url 'resend_code' %}",
+        data: {},
+        beforeSend: function (xhr) {
+          xhr.setRequestHeader("X-CSRFToken", "{{ csrf_token }}");
+        },
+        success: function (response) {
+          // Handle the success response here (if needed)
+          alert("Verification code has been resent to your email.");
+        },
+        error: function (xhr, textStatus, errorThrown) {
+          // Handle any errors here (if needed)
+          alert("Failed to resend verification code: " + errorThrown);
+        }
+      });
+    };
+  });
+</script>
+
+
+
+
+
+{% endblock %}
