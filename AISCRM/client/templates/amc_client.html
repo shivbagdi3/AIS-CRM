@@ -18,7 +18,7 @@
     </thead>
     <tbody>
       {% for client in amc_clients %}
-      <tr class="text-center">
+      <tr class="text-center" data-client-id="{{ client.id }}">
         <td>{{ forloop.counter }}</td>
         <td>{{ client.first_name }} {{ client.last_name }}</td>
         <td>{{ client.company_name }}</td>
@@ -33,5 +33,19 @@
   </table>
 </div>
 {% endif %}
+
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const rows = document.querySelectorAll("tr[data-client-id]");
+
+    rows.forEach((row) => {
+      row.addEventListener("click", function () {
+        const clientId = row.getAttribute("data-client-id");
+        window.location.href = `/update-client/${clientId}/`;  // Include the client ID in the URL
+      });
+    });
+  });
+</script>
 
 {% endblock %}

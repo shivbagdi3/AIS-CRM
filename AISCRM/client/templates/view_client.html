@@ -1,8 +1,51 @@
 {% extends 'base.html' %}
 {% block content %}
-
+{% load custom_filters %}
 
 {% if user.is_authenticated %}
+
+<div class="row">
+  <div class="col-md-2 ms-4">
+    <div class="form-outline">
+      <input type="text" name="search_query" id="search-input" class="form-control" />
+      <label class="form-label" for="form12">Search</label>
+    </div>
+  </div>
+  <br>
+  <br>
+
+  <div class="col-md-6">
+    <nav aria-label="...">
+      <ul class="pagination justify-content-center">
+        {% if page.has_previous %}
+        <li class="page-item">
+          <a class="page-link" href="?page=1">First</a>
+        </li>
+        <li class="page-item">
+          <a class="page-link" href="?page={{ page.previous_page_number }}">Previous</a>
+        </li>
+        {% endif %}
+
+        {% for i in page|get_pagination_range:5 %} 
+        <li class="page-item{% if i == page.number %} active{% endif %}">
+          <a class="page-link" href="?page={{ i }}">{{ i }}</a>
+        </li>
+        {% endfor %}
+
+        {% if page.has_next %}
+        <li class="page-item">
+          <a class="page-link" href="?page={{ page.next_page_number }}">Next</a>
+        </li>
+        <li class="page-item">
+          <a class="page-link" href="?page={{ page.paginator.num_pages }}">Last</a>
+        </li>
+        {% endif %}
+      </ul>
+    </nav>
+  </div>
+</div>
+
+
 <div class="table-responsive">
   <table class="table table-hover table-sm">
     <thead>
@@ -17,31 +60,28 @@
         <th scope="col">GST No</th>
       </tr>
     </thead>
-    <tbody>
-      {% if client %}
-        {% for clients in client %}
-        <tr class="text-center" data-client-id="{{ clients.id }}">
-          <td>{{ forloop.counter }}</td>
-          <td>{{ clients.first_name }} {{ clients.last_name }}</td>
-          <td>{{ clients.company_name }}</td>
-          <td>{{ clients.email }}</td>
-          <td>{{ clients.phone }}</td>
-          <td>{{ clients.Alternate_no }}</td>
-          {% if clients.amc_client %}
-          <td>Yes</td>
-          {% else %}
-          <td>NO</td>
-          {% endif %}
-          <td>{{ clients.GST_no }}</td>
-        </tr>
-        
-        {% endfor %}
-      {% endif %}
+    <tbody id="search-results-table">
+      {% for clients in page %}
+      <tr class="text-center" data-client-id="{{ clients.id }}">
+        <td>{{ forloop.counter }}</td>
+        <td>{{ clients.first_name }} {{ clients.last_name }}</td>
+        <td>{{ clients.company_name }}</td>
+        <td>{{ clients.email }}</td>
+        <td>{{ clients.phone }}</td>
+        <td>{{ clients.Alternate_no }}</td>
+        {% if clients.amc_client %}
+        <td>Yes</td>
+        {% else %}
+        <td>No</td>
+        {% endif %}
+        <td>{{ clients.GST_no }}</td>
+      </tr>
+      {% endfor %}
     </tbody>
   </table>
 </div>
-{% endif %}
 
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
   document.addEventListener("DOMContentLoaded", function () {
     const rows = document.querySelectorAll("tr[data-client-id]");
@@ -53,11 +93,51 @@
       });
     });
   });
+
+  $(document).ready(function () {
+    $('#search-input').on('input', function () {
+      var search_query = $(this).val();
+
+      $.ajax({
+        url: '/search-client/',
+        data: { 'search_query': search_query },
+        dataType: 'json',
+        success: function (data) {
+          var tableResultsContainer = $('#search-results-table');
+          tableResultsContainer.empty();
+
+          if (data.clients.length === 0) {
+            tableResultsContainer.append('<tr class="text-center"><td colspan="8">No results found.</td></tr>');
+          } else {
+            $.each(data.clients, function (index, client) {
+              var newRow = '<tr class="text-center" data-client-id="' + client.client_id + '">' +
+                '<td>' + (index + 1) + '</td>' +
+                '<td>' + client.first_name + ' ' + client.last_name + '</td>' +
+                '<td>' + (client.company_name ? client.company_name : '') + '</td>' +
+                '<td>' + client.email + '</td>' +
+                '<td>' + client.phone + '</td>' +
+                '<td>' + client.alternate_no + '</td>' +
+                '<td>' + (client.amc ? 'Yes' : 'No') + '</td>' +
+                '<td>' + client.gst_no + '</td>' +
+                '</tr>';
+              tableResultsContainer.append(newRow);
+
+              // Add click event listener for search results rows
+              tableResultsContainer.find('tr[data-client-id]').each(function () {
+                $(this).click(function () {
+                  const clientId = $(this).attr("data-client-id");
+                  window.location.href = `/update-client/${clientId}/`;
+                });
+              });
+            });
+          }
+        }
+      });
+    });
+  });
 </script>
 
 
-{% endblock %}
+{% endif %}
 
-    
- 
-   
+{% endblock %}
