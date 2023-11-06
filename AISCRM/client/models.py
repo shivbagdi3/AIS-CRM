@@ -15,7 +15,7 @@ class clients(models.Model):
     amc_client = models.BooleanField(default=False)
     amc_start_date = models.DateField(null=True, blank=True)
     amc_end_date = models.DateField(null=True, blank=True)
-    updated_at = models.DateTimeField(auto_now_add=True, blank=True)
+    updated_at = models.DateTimeField(auto_now=True, blank=True)
 
     def save(self, *args, **kwargs):
         if not self.pk:  # Check if the object is being created for the first time
@@ -30,3 +30,11 @@ def set_amc_start_date(sender, instance, **kwargs):
     if instance.amc_client and not instance.amc_start_date:
         # If the client is marked as an AMC client and no start date is set, set the start date to the current date
         instance.amc_start_date = timezone.now().date()
+
+
+class Feedback(models.Model):
+    feedback_id = models.ForeignKey(clients, on_delete=models.CASCADE, related_name='feedback_id')
+    feed_back = models.CharField(max_length=1000, blank= True)
+
+    def __str__(self):
+        return self.feedback

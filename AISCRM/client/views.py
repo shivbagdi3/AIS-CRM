@@ -3,7 +3,7 @@ from django.http import JsonResponse
 from django.core.paginator import Paginator, Page
 from django.db.models import Q
 from django.contrib import messages
-from client.models import clients
+from client.models import clients, Feedback
 from django.utils import timezone
 from datetime import timedelta, datetime
 from django.db import IntegrityError
@@ -34,11 +34,12 @@ def view_client(request):
     start_page = max(1, current_page - half_max_pages)
     end_page = min(total_pages, start_page + max_pages - 1)
 
-    return render(request, 'view_client.html', {
+    return render(request, 'view_clients.html', {
         'page': page,
         'start_page': start_page,
         'end_page': end_page,
     })
+
 def search_clients(request):
     search_query = request.GET.get('search_query', '')
     # Filter clients based on the search query
@@ -46,7 +47,8 @@ def search_clients(request):
         Q(first_name__icontains=search_query) |
         Q(last_name__icontains=search_query) |
         Q(email__icontains=search_query) |
-        Q(company_name__icontains=search_query)
+        Q(company_name__icontains=search_query) |
+        Q(phone__icontains=search_query)
     )
 
     # Serialize the clients
@@ -77,35 +79,50 @@ def add_client(request):
         gst_no = request.POST['GST_NO']
         company_name = request.POST['company_name']
         amc_client = request.POST.get('amc', False)  # Use a default value
+        feedback = request.POST['feedback']
+        
 
+        if clients.objects.filter(email = C_email).exists():
+            return render(request, 'add_client.html', {'msg': 'This Email already exists'})
+        
+        elif len(phone) < 10:
+            return render(request, 'add_client.html', {'msg': 'enter Atlest 10 Number'})
+        
+        elif clients.objects.filter(phone = phone).exists():
+            return render(request, 'add_client.html', {'msg': 'This Phone Number Already exists'})
+        else:             
         # Convert amc_client to a boolean
-        amc_client = amc_client == 'on'
-        amc_start = None
-        amc_end = None
-        try:
-            if amc_client:
-                amc_start = timezone.now().date()
-                amc_end = amc_start + timedelta(365)
-            client = clients(
-                  first_name= f_name,
-                  last_name= l_name,
-                  email= C_email,
-                  phone= phone,
-                  Alternate_no= alternet_no,
-                  GST_no= gst_no,
-                  company_name= company_name,
-                  amc_client= amc_client,
-                  amc_start_date = amc_start,
-                  amc_end_date = amc_end, 
-            )
-            client.save()
-        except IntegrityError:
-            return render(request, 'add_client.html', {'msg': 'Phone number already exists'})
-        except Exception as e:
-            print(e)
+            amc_client = amc_client == 'on'
+            amc_start = None
+            amc_end = None
+            try:
+                if amc_client:
+                    amc_start = timezone.now().date()
+                    amc_end = amc_start + timedelta(365)
+                client = clients(
+                    first_name= f_name,
+                    last_name= l_name,
+                    email= C_email,
+                    phone= phone,
+                    Alternate_no= alternet_no,
+                    GST_no= gst_no,
+                    company_name= company_name,
+                    amc_client= amc_client,
+                    amc_start_date = amc_start,
+                    amc_end_date = amc_end, 
+                )
+                client.save()
 
-        return redirect('view-client')
-    return render(request, 'add_client.html')
+                feedback_obj = Feedback(feedback=feedback, feedback_id=client)
+                feedback_obj.save()
+                
+            except IntegrityError:
+                return render(request, 'add_client.html', {'msg': 'Phone number already exists'})
+            except Exception as e:
+                print(e)
+
+            return redirect('view-client')
+    return render(request, 'add_clients.html')
 
 
 
@@ -144,5 +161,22 @@ def update_client(request, client_id):
 
 def amc_clients(request):
     amc_clients = clients.objects.filter(amc_client=True)
-    return render(request, 'amc_client.html', {'amc_clients': amc_clients})
+    items_per_page = 15
+
+    paginator = Paginator(amc_clients, items_per_page)
+    page_number = request.GET.get('page')
+    page = paginator.get_page(page_number)
+
+    max_pages = 5  # Show 5 page numbers
+    current_page = page.number
+    total_pages = paginator.num_pages
+
+    half_max_pages = max_pages // 2
+    start_page = max(1, current_page - half_max_pages)
+    end_page = min(total_pages, start_page + max_pages - 1)
+    return render(request, 'view_clients.html', {
+        'page': page,
+        'start_page': start_page,
+        'end_page': end_page,
+    })
 
