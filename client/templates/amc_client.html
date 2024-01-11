@@ -1,0 +1,231 @@
+{% extends 'base_dash.html' %}
+{% block content %}
+{% load custom_filters %}
+
+<div class="container-fluid">
+  <div class="row align-items-center">
+    <div class="col-lg-12 align-items-stretch">
+      <div class="card w-100 shadow-lg">
+        <div class="card-body p-4">
+          <div class="row align-items-center">
+            <div class="col-md-4">
+              <h5 class="card-title fw-semibold mb-4">Client Details</h5>
+            </div>
+            <div class="col-md-2 ms-auto">
+              <div class="dropdown mb-3">
+                <button class="btn btn-outline-info dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                  Filter & Actions
+                </button>
+                <ul class="dropdown-menu">
+                  <li><a class="dropdown-item" href="{% url 'view-client' %}">All Clients</a></li>
+                  <li><a class="dropdown-item" href="{% url 'amc-client' %}">Amc Clients</a></li>
+                  <li><a class="dropdown-item" href="{% url 'export_csv' app_name='your_app_name' model_name='YourModel' %}"></li>
+                </ul>
+              </div>
+            </div>
+            <div class="table-responsive mb-4">
+              <table class="table text-nowrap mb-0 table-hover align-middle table-sm">
+                <thead class="text-dark fs-4 text-center">
+                  <tr>
+                    <th class="border-bottom-0">
+                      <h6 class="fw-semibold mb-0">Sr No</h6>
+                    </th>
+                    <th class="border-bottom-0">
+                      <h6 class="fw-semibold mb-0">Name</h6>
+                    </th>
+                    <th class="border-bottom-0">
+                      <h6 class="fw-semibold mb-0">Email</h6>
+                    </th>
+                    <th class="border-bottom-0">
+                      <h6 class="fw-semibold mb-0">Phone No</h6>
+                    </th>
+                    <th class="border-bottom-0">
+                      <h6 class="fw-semibold mb-0">AMC Details</h6>
+                    </th>
+                    <th class="border-bottom-0">
+                      <h6 class="fw-semibold mb-0">GST No</h6>
+                    </th>
+                  </tr>
+                </thead>
+                <tbody id="search-results-table">
+                  {% for clients in page %}
+                  <tr class="text-center" data-client-id="{{ clients.id }}">
+                    <td class="border-bottom-0">
+                      <h6 class="fw-semibold mb-0">{{ forloop.counter }}</h6>
+                    </td>
+                    <td class="border-bottom-0">
+                      <h6 class="fw-semibold mb-1">{{ clients.first_name }} {{ clients.last_name }}</h6>
+                      <span class="fw-normal">{{ clients.company_name }}</span>
+                    </td>
+                    <td class="border-bottom-0">
+                      <p class="mb-0 fw-semibold">{{ clients.email }}</p>
+                    </td>
+                    <td class="border-bottom-0">
+                      <h6 class="fw-semibold mb-0 fs-4">{{ clients.phone }}</h6>
+                      <span class="fw-normal">{{ clients.Alternate_no }}</span>
+                    </td>
+                    {% if clients.amc_client %}
+                    <td class="border-bottom-0">
+                      <div class="align-items-center gap-2">
+                        {% if clients.remaining_days >= 30 %}
+                        <div class="badge bg-warning rounded-3 fw-semibold">
+                          <span class="fw-semibold col">in {{ clients.remaining_days }} Days</span>
+                        </div>
+                        {% elif clients.remaining_days >= 10 %}
+                        <div class="badge bg-danger rounded-3 fw-semibold">
+                          <span class="fw-semibold col">in {{ clients.remaining_days }} Days</span>
+                        </div>
+                        {% else %}
+                        <span class="badge bg-warning rounded-3 fw-semibold">in {{ clients.remaining_days }} days</span>
+                        {% endif %}
+                      </div>
+                    </td>
+                    {% else %}
+                    <td class="border-bottom-0">
+                      <div class="align-items-center gap-2">
+                        <span class="badge bg-danger rounded-3 fw-semibold">No</span>
+                      </div>
+                    </td>
+                    {% endif %}
+                    <td class="border-bottom-0">
+                      <h6 class="fw-semibold mb-0 fs-4">{{ clients.GST_no }}</h6>
+                    </td>
+                  </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <div>
+            <nav aria-label="...">
+              <ul class="pagination justify-content-center">
+                {% if page.has_previous %}
+                <li class="page-item">
+                  <a class="page-link" href="?page=1">First</a>
+                </li>
+                <li class="page-item">
+                  <a class="page-link" href="?page={{ page.previous_page_number }}">Previous</a>
+                </li>
+                {% endif %}
+
+                {% for i in page|get_pagination_range:5 %}
+                <li class="page-item{% if i == page.number %} active{% endif %}">
+                  <a class="page-link" href="?page={{ i }}">{{ i }}</a>
+                </li>
+                {% endfor %}
+
+                {% if page.has_next %}
+                <li class="page-item">
+                  <a class="page-link" href="?page={{ page.next_page_number }}">Next</a>
+                </li>
+                <li class="page-item">
+                  <a class="page-link" href="?page={{ page.paginator.num_pages }}">Last</a>
+                </li>
+                {% endif %}
+              </ul>
+            </nav>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const rows = document.querySelectorAll("tr[data-client-id]");
+
+    rows.forEach((row) => {
+      row.addEventListener("click", function () {
+        const clientId = row.getAttribute("data-client-id");
+        window.location.href = `/update-client/${clientId}/`;  // Include the client ID in the URL
+      });
+    });
+  });
+
+  $(document).ready(function () {
+    // Keep track of the previous search query
+    var prevSearchQuery = '';
+
+    $('#search-input').on('input', function () {
+      var search_query = $(this).val();
+
+      // Check if the search query has changed
+      if (search_query !== prevSearchQuery) {
+        // Update the previous search query
+        prevSearchQuery = search_query;
+
+        // Perform the search only if the query is not empty
+        if (search_query.trim() !== '') {
+          $.ajax({
+            url: '/search-client/',
+            data: { 'search_query': search_query },
+            dataType: 'json',
+            success: function (data) {
+              renderSearchResults(data.clients);
+            }
+          });
+        } else {
+          // If the search query is empty, redirect to the view-client page
+          window.location.href = '/amc-client/';
+        }
+      }
+    });
+
+    // Function to render search results
+    function renderSearchResults(clients) {
+      var tableResultsContainer = $('#search-results-table');
+      tableResultsContainer.empty();
+
+      if (clients.length === 0) {
+        tableResultsContainer.append('<tr class="text-center"><td colspan="8">No results found.</td></tr>');
+      } else {
+        $.each(clients, function (index, client) {
+          var newRow = '<tr class="text-center" data-client-id="' + client.client_id + '">' +
+            '<td class="border-bottom-0">' +
+            '<h6 class="fw-semibold mb-0">' + (index + 1) + '</h6>' +
+            '</td>' +
+            '<td class="border-bottom-0">' +
+            '<h6 class="fw-semibold mb-1">' + client.first_name + ' ' + client.last_name + '</h6>' +
+            '<span class="fw-normal">' + (client.company_name ? client.company_name : '') + '</span>' +
+            '</td>' +
+            '</td>' +
+            '<td class="border-bottom-0">' +
+            '<p class="mb-0 fw-semibold">' + client.email + '</p>' +
+            '</td>' +
+            '<td class="border-bottom-0">' +
+            '<h6 class="fw-semibold mb-0 fs-4">' + client.phone + '</h6>' +
+            '<span class="fw-normal">' + client.alternate_no + '</span>' +
+            '</td>' +
+            '<td class="border-bottom-0">' +
+            '<div class="align-items-center gap-2">' +
+            '<span class="badge rounded-3 fw-semibold ' +
+            (client.remaining_days >= 30 ? 'bg-warning' :
+              (client.remaining_days >= 10 ? 'bg-danger' : 'bg-warning')) +
+            '">' +
+            (client.remaining_days !== 'N/A' ? 'in ' + client.remaining_days + ' Days' : 'N/A') +
+            '</span>' +
+            '</div>' +
+            '</td>' +
+            '<td class="border-bottom-0">' +
+            '<h6 class="fw-semibold mb-0 fs-4">' + client.gst_no + '</h6>' +
+            '</td>' +
+
+            '</tr>';
+          tableResultsContainer.append(newRow);
+
+          // Add click event listener for search results rows
+          tableResultsContainer.find('tr[data-client-id]').each(function () {
+            $(this).click(function () {
+              const clientId = $(this).attr("data-client-id");
+              window.location.href = `/update-client/${clientId}/`;
+            });
+          });
+        });
+      }
+    }
+  });
+</script>
+{% endblock %}

@@ -1,0 +1,126 @@
+{% extends 'base_dash.html' %}
+{% block content %}
+
+{% load static %}
+
+<div class="container-fluid">
+  <form class="col-8 mx-auto card shadow-lg p-3 shadow-lg" method="post" action="{% url 'add-client' %}" id="myForm">
+    {% csrf_token %}
+
+    {% if msg is not None %}
+    <div id="danger-alert" class="alert alert-danger alert-dismissible fade show" role="alert">
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Danger:">
+        <use xlink:href="#exclamation-triangle-fill" />
+      </svg>
+      <div>
+        {{ msg }}
+      </div>
+    </div>
+    {% endif %}
+
+    <h2 class="text-primary fw-bold ms-2"> Add Clients</h2>
+
+    <br>
+    <div class="row">
+      <div class="col-md-6 mb-2">
+
+        <div class="form-outline">
+          <label class="form-label" for="firstName">First Name</label>
+          <input type="text" id="firstName" name="first_name" class="form-control form-control-lg" />          
+        </div>
+
+      </div>
+      <div class="col-md-6 mb-2">
+
+        <div class="form-outline">
+          <label class="form-label" for="lastName">Last Name</label>
+          <input type="text" id="lastName" name="last_name" class="form-control form-control-lg" />          
+        </div>
+
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-6 mb-2 pb-2">
+
+        <div class="form-outline">
+          <label class="form-label" for="emailAddress">Email</label>
+          <input type="email" id="emailAddress" name="email" class="form-control form-control-lg" />
+        </div>
+
+      </div>
+      <div class="col-md-6 mb-2 pb-2">
+
+        <div class="form-outline">
+          <label class="form-label" for="phoneNumber">Phone Number</label>
+          <input type="tel" id="phoneNumber" name="phone_num" class="form-control form-control-lg" />
+        </div>
+
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-6 mb-2 d-flex align-items-center">
+
+        <div class="form-outline w-100">
+          <label for="birthdayDate" class="form-label">Alternative No</label>
+          <input type="tel" name="alternate_no" class="form-control form-control-lg" id="birthdayDate" />
+        </div>
+
+      </div>
+      <div class="col-md-6 mb-2">
+
+        <div class="form-outline w-100">
+          <label for="birthdayDate" class="form-label">GST NO</label>
+          <input type="text" name="GST_NO" class="form-control form-control-lg" id="birthdayDate" />    
+        </div>
+
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-6 mb-2 d-flex align-items-center">
+
+        <div class="form-outline w-100">
+          <label for="birthdayDate" class="form-label">Company Name</label>
+          <input type="tel" name="company_name" class="form-control form-control-lg" id="birthdayDate" />          
+        </div>
+
+      </div>
+
+
+      <div class="col-md-6 mt-5 mb-2">
+        <div class="form-outline w-100">
+          <div class="form-check form-switch">
+            <input class="form-check-input" type="checkbox" name = 'amc' role="switch" id="flexSwitchCheckDefault">
+            <label class="form-check-label" for="flexSwitchCheckDefault">AMC Clients</label>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-12 mb-4 d-flex align-items-center">
+        <div class="form-outline w-100">
+          <label for="birthdayDate" class="form-label">feedback</label>
+          <textarea class="form-control" id="textAreaExample" name="feedback" rows="3"></textarea>          
+        </div>
+      </div>
+    </div>
+
+
+    <ul class="nav nav-pills mb-3 justify-content-center" id="pills-tab2" role="tablist">
+      <li class="nav-item" role="presentation">
+        <button class="btn btn-primary" type="submit" id="pills-home-tab2" data-mdb-toggle="pill"
+          data-mdb-target="#pills-home2" type="button" role="tab" aria-controls="pills-home" aria-selected="true"><i
+            class="fa-solid fa-user-plus me-2"></i>
+          Add Client
+        </button>
+      </li>
+    </ul>
+  </form>
+</div>
+
+
+{% endblock %}

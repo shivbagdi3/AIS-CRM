@@ -1,0 +1,303 @@
+{% extends 'base_dash.html' %}
+{% block content %}
+
+<div class="container-fluid">
+    <div class="row align-items-center">
+        <div class="col-lg-12 align-items-stretch">
+            <div class="card w-100 shadow-lg">
+                <div class="card-body p-4">
+                    <div class="row align-items-center">
+                        <form method="post" id="myForm" action="{% url 'add_product' %}">
+                            <h2 class="mb-4">Add New Product</h2>
+                            {% if msg is not None %}
+                            <div id="danger-alert" class="alert alert-danger alert-dismissible fade show" role="alert">
+                                <button type="button" class="btn-close" data-bs-dismiss="alert"
+                                    aria-label="Close"></button>
+                                <div>
+                                    {{ msg }}
+                                </div>
+                            </div>
+                            {% endif %}
+                            {% csrf_token %}
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="input-group mb-3">
+                                        <label for="vendor"
+                                            class="input-group-text text-primary rounded-start">Vendor</label>
+                                        <select name="vendor" id="vendor" class="form-select rounded-end" required>
+                                            <option selected disabled>Select Vendor</option>
+                                            {% for vendor in vendors %}
+                                            <option value="{{ vendor.id }}">{{ vendor.vendor_name }}</option>
+                                            {% endfor %}
+                                            <option value="new_vendor">Add New Vendor</option>
+                                        </select>
+                                        <input type="text" name="vendor_name" id="new_vendor_input" class="form-control"
+                                            placeholder="Enter New Vendor" style="display: none;">
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="input-group mb-3">
+                                        <label for="brand"
+                                            class="input-group-text text-primary rounded-start">Brand</label>
+                                        <select name="brand" id="brand" class="form-select rounded-end" required>
+                                            <option selected disabled>Select Brand</option>
+                                            <option value="new_brand" name="brand_name">Add New Brand</option>
+                                        </select>
+                                        <input type="text" name="brand_name" id="new_brand_input" class="form-control"
+                                            placeholder="Enter New Brand" style="display: none;">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+
+                                <div class="col-md-6">
+                                    <div class="input-group mb-3">
+                                        <label for="categories"
+                                            class="input-group-text text-primary rounded-start">Categories</label>
+                                        <select name="categories" id="categories" class="form-select rounded-end"
+                                            required>
+                                            <option selected disabled>Select Categories</option>
+                                            <option value="new_category">Add New Category</option>
+                                        </select>
+                                        <input type="text" name="category_name" id="new_category_input"
+                                            class="form-control" placeholder="Enter New Category"
+                                            style="display: none;">
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="input-group mb-3">
+                                        <label for="subcategories"
+                                            class="input-group-text text-primary rounded-start">Sub Categories</label>
+                                        <select name="subcategories" id="subcategories" class="form-select rounded-end"
+                                            required>
+                                            <option selected disabled>Select Sub Categories</option>
+                                            <option value="new_subcategory">Add New Sub Category
+                                            </option>
+                                        </select>
+                                        <input type="text" name="new_subcategory" id="new_subcategory_input"
+                                            class="form-control" placeholder="Enter New Sub Category"
+                                            style="display: none;">
+                                    </div>
+                                </div>
+
+                            </div>
+
+
+                            <div class="row">
+                                <div class="col-md-6 mb-2 pb-2">
+
+                                    <div class="form-outline">
+                                        <label class="form-label" for="emailAddress">Product Name</label>
+                                        <input type="text" name="product_name" class="form-control form-control-lg" />
+                                    </div>
+
+                                </div>
+                                <div class="col-md-6 mb-2 d-flex align-items-center">
+
+                                    <div class="form-outline w-100">
+                                        <label class="form-label">Price</label>
+                                        <input type="number" name="price" class="form-control form-control-lg" />
+                                    </div>
+
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6 mb-2 d-flex align-items-center">
+                                    <div class="form-outline w-100">
+                                        <label class="form-label">Model Name or Number </label>
+                                        <input type="text" name="model_name" class="form-control form-control-lg" />
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-12 mb-4 d-flex align-items-center">
+                                    <div class="form-outline w-100">
+                                        <label class="form-label">Description</label>
+                                        <textarea class="form-control" id="textAreaExample" name="description"
+                                            rows="3"></textarea>
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12 mb-4 d-flex align-items-center">
+                                    <div class="form-outline w-100">
+                                        <label for="birthdayDate" class="form-label">Serial Number</label>
+                                        <textarea class="form-control" id="textAreaExample" name="serial_number"
+                                            rows="3"></textarea>
+
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <ul class="nav nav-pills mb-3 justify-content-center" id="pills-tab2" role="tablist">
+                                <li class="nav-item" role="presentation">
+                                    <button class="btn btn-primary" type="submit" id="pills-home-tab2"
+                                        data-mdb-toggle="pill" data-mdb-target="#pills-home2" type="button" role="tab"
+                                        aria-controls="pills-home" aria-selected="true"><i
+                                            class="fa-solid fa-user-plus me-2"></i>
+                                        Add Product
+                                    </button>
+                                </li>
+                            </ul>
+
+                        </form>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // form reset
+    document.addEventListener('DOMContentLoaded', function () {
+        // Wait for the DOM content to be loaded
+        document.getElementById('myForm').reset();
+    });
+    //////////////////////////////////////////////////////////////
+
+    document.getElementById('vendor').addEventListener('change', function () {
+        var vendorSelect = document.getElementById('vendor');
+        var newVendorInput = document.getElementById('new_vendor_input');
+
+        if (vendorSelect.value === 'new_vendor') {
+            // Show the input field when "Add New Vendor" is selected
+            newVendorInput.style.display = 'block';
+        } else {
+            // Hide the input field when a vendor is selected
+            newVendorInput.style.display = 'none';
+        }
+    });
+
+    document.getElementById('brand').addEventListener('change', function () {
+        var brandSelect = document.getElementById('brand');
+        var newBrandInput = document.getElementById('new_brand_input');
+
+        if (brandSelect.value === 'new_brand') {
+            newBrandInput.style.display = 'block';
+        } else {
+            newBrandInput.style.display = 'none';
+        }
+    });
+
+
+    document.getElementById('categories').addEventListener('change', function () {
+        var categorySelect = document.getElementById('categories');
+        var newCategoryInput = document.getElementById('new_category_input');
+
+        if (categorySelect.value === 'new_category') {
+            // Show the input field when "Add New Category" is selected
+            newCategoryInput.style.display = 'block';
+        } else {
+            // Hide the input field when a category is selected
+            newCategoryInput.style.display = 'none';
+        }
+    });
+
+    document.getElementById('subcategories').addEventListener('change', function () {
+        var subcategorySelect = document.getElementById('subcategories');
+        var newSubcategoryInput = document.getElementById('new_subcategory_input');
+
+        if (subcategorySelect.value === 'new_subcategory') {
+            // Show the input field when "Add New Sub Category" is selected
+            newSubcategoryInput.style.display = 'block';
+        } else {
+            // Hide the input field when a subcategory is selected
+            newSubcategoryInput.style.display = 'none';
+        }
+    });
+
+
+    document.getElementById('vendor').addEventListener('change', function () {
+        var vendorId = this.value;
+
+        // Fetch Brands based on the selected vendor
+        fetch(`/api/brands/${vendorId}/`)
+            .then(response => response.json())
+            .then(data => {
+                var brandSelect = document.getElementById('brand');
+                brandSelect.innerHTML = '<option selected disabled>Select Brand</option>';  // Clear and add default option
+                data.forEach(brand => {
+                    var option = document.createElement('option');
+                    option.value = brand.id;
+                    option.name = 'brand_name'
+                    option.textContent = brand.brand_name;
+                    brandSelect.appendChild(option);
+                });
+                var newBrandOption = document.createElement('option');
+                newBrandOption.value = 'new_brand';
+                newBrandOption.name = 'brand_name';
+                newBrandOption.textContent = 'Add New Brand';
+                brandSelect.appendChild(newBrandOption);
+            });
+    });
+
+    // Add event listener for Brand dropdown
+    document.getElementById('brand').addEventListener('change', function () {
+        var brandId = this.value;
+
+        // Fetch Categories based on the selected brand
+        fetch(`/api/categories/${brandId}/`)
+            .then(response => response.json())
+            .then(data => {
+                var categorySelect = document.getElementById('categories');
+                categorySelect.innerHTML = '<option selected disabled>Select Categories</option>';  // Clear and add default option
+                data.forEach(category => {
+                    var option = document.createElement('option');
+                    option.value = category.id;
+                    option.name = 'category_name'
+                    option.textContent = category.category_name;
+                    categorySelect.appendChild(option);
+                });
+
+                var newCategoryOption = document.createElement('option');
+                newCategoryOption.value = 'new_category';
+                newCategoryOption.name = 'category_name';
+                newCategoryOption.textContent = 'Add New Category';
+                categorySelect.appendChild(newCategoryOption);
+            });
+    });
+
+    // Add event listener for Category dropdown
+    document.getElementById('categories').addEventListener('change', function () {
+        var categoryId = this.value;
+
+        // Check if the selected value is 'new_category'
+        if (categoryId === 'new_category') {
+            // Handle the 'new_category' option here (e.g., show an input field)
+            return;
+        }
+
+        // Fetch Subcategories based on the selected category
+        fetch(`/api/subcategories/${categoryId}/`)
+            .then(response => response.json())
+            .then(data => {
+                var subcategorySelect = document.getElementById('subcategories');
+                subcategorySelect.innerHTML = '<option selected disabled>Select Sub Categories</option>';  // Clear and add default option
+                data.forEach(subcategory => {
+                    var option = document.createElement('option');
+                    option.value = subcategory.id;
+                    option.name = 'subcategory';
+                    option.textContent = subcategory.subcategory_name;
+                    subcategorySelect.appendChild(option);
+                });
+                // Append the "Add New Subcategory" option
+                var newSubcategoryOption = document.createElement('option');
+                newSubcategoryOption.value = 'new_subcategory';
+                newSubcategoryOption.name = 'subcategory';
+                newSubcategoryOption.textContent = 'Add New Subcategory';
+                subcategorySelect.appendChild(newSubcategoryOption);
+            });
+    });
+</script>
+
+
+{% endblock %}

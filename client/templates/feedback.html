@@ -1,0 +1,30 @@
+{% extends 'base_dash.html' %}
+{% block content %}
+
+<div class="container-fluid">
+  <div class="row align-items-center">
+    <div class="col-lg-12 align-items-stretch">
+      <div class="card w-100 shadow-lg">
+        <div class="card-body p-4">
+          <div class="row align-items-center">
+            <div class="col-md-4">
+              <h5 class="card-title fw-semibold mb-4">Client Details</h5>
+              {% if feedback %}
+              <ul>
+                {% for feedback_item in feedback %}
+                <li>{{ feedback_item.feed_back }} (Updated by: {{ feedback_item.update_by.username }})</li>
+                {% endfor %}
+              </ul>
+              {% else %}
+              <p>No feedback available for this client.</p>
+              {% endif %}
+             
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,15 @@
+{% for product_info in product_info_list %}
+        <h2>{{ product_info.product_name }}</h2>
+        <p>Product Description: {{ product_info.product_description }}</p>
+        <p>Number of Serial Numbers: {{ product_info.serial_number_count }}</p>
+        <p>vendor: {{ product_info.vendor }}</p>
+        <p>count : {{ product_info.count }}</p>
+        
+        <ul>
+            {% for serial_number in product_info.serial_numbers %}
+                <li>Serial Number: {{ serial_number.serial_number }} {{ serial_number.status }}</li>
+            {% endfor %}
+        </ul>
+        
+        <hr>
+    {% endfor %}
